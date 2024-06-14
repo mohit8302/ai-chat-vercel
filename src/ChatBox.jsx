@@ -26,7 +26,7 @@ import "./ChatBox.css";
   };
 
   return (
-    <div className="chat-bot font-montserrat fixed bottom-4 right-8 z-50">
+    <div className="chat-bot font-montserrat fixed bottom-4 right-8 z-40	">
       {isChatVisible ? (
         <div className="relative">
           <div className="bg-[#EFEFEF] w-96 h-96 rounded-lg overflow-hidden shadow-lg flex flex-col bg-white">
