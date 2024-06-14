@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chat Widget Example</title>
+  <!-- Include React and ReactDOM (development versions for testing) -->
+  <script src="https://unpkg.com/react/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom/umd/react-dom.development.js"></script>
+<script defer src="chat-widget.js"></script><link href="chat-widget.css" rel="stylesheet"><script defer src="chat-widget.js"></script><link href="chat-widget.css" rel="stylesheet"></head>
+<body>
+  <div id="chat-widget-container"></div>
+
+  <!-- Ensure chat-widget.js is loaded after React and ReactDOM -->
+  <script defer src="chat-widget.js"></script>
+
+  <!-- Script to render the chat widget -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      window.renderChatWidget('chat-widget-container', { prop1: 'value1', prop2: 'value2' });
+    });
+  </script>
+</body>
+</html>
