@@ -1,5 +1,5 @@
 // src/ChatBox.jsx
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import sicon from "../src/assets/setting.svg";
 import send from "../src/assets/send.svg";
 import cross from "../src/assets/cross.svg";
