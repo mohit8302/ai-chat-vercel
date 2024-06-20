@@ -6,7 +6,9 @@ import cross from "../src/assets/cross.svg";
 import chat from "../src/assets/chat.svg";
 import "./ChatBox.css";
 
- const ChatBox = () => {
+
+
+const ChatBox = () => {
   const [isChatVisible, setIsChatVisible] = useState(false);
   const [isSettingsVisible, setIsSettingsVisible] = useState(false);
   const [notificationCount, setNotificationCount] = useState(5);
@@ -38,10 +40,22 @@ import "./ChatBox.css";
 
       // Simulate API call with a delay
       setTimeout(() => {
-        const clientResponse = { text: "This is a response from the AI Assistant.", timestamp: new Date(), sender: "client" };
-        setMessages((prevMessages) => [...prevMessages, clientResponse]);
-        setIsLoading(false);
+        fetchScrapedData(inputValue).then(() => {
+          const clientResponse = { text: "This is a response from the AI Assistant.", timestamp: new Date(), sender: "client" };
+          setMessages((prevMessages) => [...prevMessages, clientResponse]);
+          setIsLoading(false);
+        });
       }, 2000);
+    }
+  };
+
+  const fetchScrapedData = async (url) => {
+    try {
+      const response = await axios.post('http://localhost:3001/scrape', { url });
+      const data = response.data.data;
+      console.log('Scraped data:', data); // Log the scraped data for testing purposes
+    } catch (error) {
+      console.error('Error fetching scraped data:', error);
     }
   };
 
@@ -183,5 +197,4 @@ import "./ChatBox.css";
     </div>
   );
 };
-
-export default ChatBox;
+export default ChatBox
