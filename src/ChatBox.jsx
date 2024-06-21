@@ -8,8 +8,7 @@ import chat from "../src/assets/chat.svg";
 import "./ChatBox.css";
 
 
-
-const ChatBox = () => {
+export const ChatBox = () => {
   const [isChatVisible, setIsChatVisible] = useState(false);
   const [isSettingsVisible, setIsSettingsVisible] = useState(false);
   const [notificationCount, setNotificationCount] = useState(5);
@@ -41,22 +40,10 @@ const ChatBox = () => {
 
       // Simulate API call with a delay
       setTimeout(() => {
-        fetchScrapedData(inputValue).then(() => {
-          const clientResponse = { text: "This is a response from the AI Assistant.", timestamp: new Date(), sender: "client" };
-          setMessages((prevMessages) => [...prevMessages, clientResponse]);
-          setIsLoading(false);
-        });
+        const clientResponse = { text: "This is a response from the AI Assistant.", timestamp: new Date(), sender: "client" };
+        setMessages((prevMessages) => [...prevMessages, clientResponse]);
+        setIsLoading(false);
       }, 2000);
-    }
-  };
-
-  const fetchScrapedData = async (url) => {
-    try {
-      const response = await axios.post('http://localhost:3001/scrape', { url });
-      const data = response.data.data;
-      console.log('Scraped data:', data); // Log the scraped data for testing purposes
-    } catch (error) {
-      console.error('Error fetching scraped data:', error);
     }
   };
 
@@ -80,6 +67,37 @@ const ChatBox = () => {
     const minutes = String(date.getMinutes()).padStart(2, "0");
     return `${year}-${month}-${day} ${hours}:${minutes}`;
   };
+
+  // Listen for messages from the parent page
+  useEffect(() => {
+    const handleMessage = (event) => {
+      if (event.data.action === 'sendPageContent') {
+        const pageContent = event.data.content;
+
+        // Send the page content to the server
+        fetch('https://chat-server-six-delta.vercel.app/api/page-content', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ content: pageContent }),
+        })
+        .then(response => response.json())
+        .then(data => {
+          console.log('Page content sent successfully:', data);
+        })
+        .catch((error) => {
+          console.error('Error sending page content:', error);
+        });
+      }
+    };
+
+    window.addEventListener('message', handleMessage);
+
+    return () => {
+      window.removeEventListener('message', handleMessage);
+    };
+  }, []);
 
   return (
     <div className="chat-bot font-montserrat fixed bottom-4 right-4 sm:bottom-2 sm:right-2 md:bottom-6 md:right-6">
@@ -198,4 +216,5 @@ const ChatBox = () => {
     </div>
   );
 };
+
 export default ChatBox
